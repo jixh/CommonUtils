@@ -17,9 +17,10 @@ import com.jc.commonutils.R;
 public class LoadingUtil{
     View view = null;
     AnimationDrawable animationDrawable = null;
+    LayoutInflater inflater;
 
     public LoadingUtil(){
-        LayoutInflater inflater = LayoutInflater.from(MyApplication.getInstance().getApplicationContext());
+        inflater = LayoutInflater.from(CommonUtils.context);
         view = inflater.inflate(R.layout.loading, null);
 
         ImageView imageView = (ImageView)view.findViewById(R.id.image_loading);
@@ -53,7 +54,6 @@ public class LoadingUtil{
     }
     
     public View error(String msg){
-    	 LayoutInflater inflater = LayoutInflater.from(MyApplication.getInstance().getApplicationContext());
          View error_view = inflater.inflate(R.layout.error, null);
          TextView textview_msg = (TextView)error_view.findViewById(R.id.msg);
          textview_msg.setText(msg);
@@ -62,10 +62,7 @@ public class LoadingUtil{
     
     //旋转
 	public View rotate(Context context,View view){
-//        LayoutInflater inflater = LayoutInflater.from(context);
-
         ImageView loading = (ImageView)view.findViewById(R.id.image_loading);
-
         Animation anim = AnimationUtils.loadAnimation(context, R.anim.tip);
         LinearInterpolator lin = new LinearInterpolator();
         anim.setInterpolator(lin);
@@ -76,6 +73,4 @@ public class LoadingUtil{
 
         return view;
     }
-
-
 }

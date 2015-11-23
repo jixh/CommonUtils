@@ -3,11 +3,11 @@ package com.jc.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateUtil {
+public class DateUtils {
 
 	public static final String YYMMDD = "yyyy-MM-dd";
 
-	public DateUtil(){
+	public DateUtils(){
 		throw new AssertionError();
 	}
 
@@ -48,7 +48,5 @@ public class DateUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat(YYMMDD);
 		return sdf.format(date);
 	}
-
-
 
 }

@@ -16,14 +16,14 @@ import java.io.InputStream;
  * @author Administrator
  *
  */
-public class FormatTools {
-    private static FormatTools tools = null;
+public class BitmapTools {
+    private static BitmapTools tools = null;
 
-    public static FormatTools getInstance() {
+    public static BitmapTools getInstance() {
         if (tools == null) {
-            synchronized (FormatTools.class){
+            synchronized (BitmapTools.class){
                 if (tools == null)
-                tools = new FormatTools();
+                tools = new BitmapTools();
             }
         }
         return tools;

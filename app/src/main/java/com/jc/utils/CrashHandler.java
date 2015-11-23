@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * UncaughtException处理类,当程序发生Uncaught异常的时候,有该类来接管程序,并记录发送错误报告.
  *
- * 使用方法：
+ * 使用方法：Application中添加
  *   CrashHandler crashHandler =  CrashHandler.getInstance();
      crashHandler.init(this);
  *

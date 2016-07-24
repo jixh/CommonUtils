@@ -1,9 +1,7 @@
 package com.jktaihe.utils;
 
 import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.util.Log;
 
 import java.util.List;
 
@@ -26,13 +24,22 @@ public class ActivityUtils {
      * @return
      */
     public static boolean isRuningTop(Context context,String className) {
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        Log.d("", "pkg:" + cn.getPackageName());
-        Log.d("", "cls:"+cn.getClassName());
-        return className.equals(cn.getClassName());
+        return className.equals(getTopActivity(context));
     }
 
+    /**
+     * get top activity
+     * @param context
+     * @return
+     */
+    public static String getTopActivity(Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
+        if (runningTaskInfos != null)
+            return runningTaskInfos.get(0).topActivity.getClassName();
+        else
+            return "";
+    }
     /**
      * 检查是否有running的Activit 或者 Service
      * @param context

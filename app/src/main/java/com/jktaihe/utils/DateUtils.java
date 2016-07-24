@@ -1,6 +1,9 @@
 package com.jktaihe.utils;
 
+import android.text.TextUtils;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -12,8 +15,9 @@ import java.util.Date;
 
 public class DateUtils {
 
-	public static final String YYMMDD = "yyyy-MM-dd";
-	public static final SimpleDateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static SimpleDateFormat SDF_DAY = new SimpleDateFormat("yyyy-MM-dd");
+	private static SimpleDateFormat SDF_DAY_TIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static SimpleDateFormat SDF_TIME = new SimpleDateFormat("HH:mm");
 
 	private DateUtils(){
 		throw new AssertionError();
@@ -24,13 +28,62 @@ public class DateUtils {
 	 * @param endDate
 	 * @return
 	 */
-	public static int betweenWeeks(String beginDate,String endDate){
-
+	public static int betweenSecond(String beginDate,String endDate){
 		int w = 0;
-		if(!beginDate.equals("") && !beginDate.equals("")){
-			SimpleDateFormat sdf = new SimpleDateFormat(YYMMDD);
+		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
 			try {
-				w = (int) ((sdf.parse(endDate).getTime() - sdf.parse(beginDate).getTime())/(1000*60*60*24*7));
+				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return w;
+	}
+	/**
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+	public static int betweenMin(String beginDate,String endDate){
+		int w = 0;
+		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
+			try {
+				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000*60));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return w;
+	}
+
+	/**
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+	public static int betweenHour(String beginDate,String endDate){
+		int w = 0;
+		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
+			try {
+				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000*60*60));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return w;
+	}
+
+
+	/**
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+	public static int betweenWeeks(String beginDate,String endDate){
+		int w = 0;
+		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
+			try {
+				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000*60*60*24*7));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -45,10 +98,9 @@ public class DateUtils {
 	 */
 	public static int betweenDays(String beginDate,String endDate){
 		int w = 0;
-		if(!beginDate.equals("") && !beginDate.equals("")){
-			SimpleDateFormat sdf = new SimpleDateFormat(YYMMDD);
+		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
 			try {
-				w = (int) ((sdf.parse(endDate).getTime() - sdf.parse(beginDate).getTime())/(1000*60*60*24));
+				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000*60*60*24));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -60,65 +112,135 @@ public class DateUtils {
 	 * @param date
 	 * @return
 	 */
-	public static String format(Date date){
+	public static String formatYMD(Date date){
 		if (date == null)return "";
-		SimpleDateFormat sdf = new SimpleDateFormat(YYMMDD);
-		return sdf.format(date);
+		return SDF_DAY.format(date);
 	}
 
 	/**
 	 * @param date
 	 * @return
 	 */
-	public static String format(long date){
-		SimpleDateFormat sdf = new SimpleDateFormat(YYMMDD);
-		return sdf.format(date);
+	public static String formatYMD(long date){
+		return SDF_DAY.format(date);
 	}
 
 	/**
-	 * long time to string
-	 * @param timeInMillis
-	 * @param dateFormat
+	 * get current time
 	 * @return
 	 */
-	public static String getTime(long timeInMillis, SimpleDateFormat dateFormat) {
-		return dateFormat.format(new Date(timeInMillis));
+	public static String getCurrentTime(SimpleDateFormat dateFormat) {
+		return  SDF_DAY.format(System.currentTimeMillis());
 	}
 
 	/**
-	 * long time to string, format is {@link #DEFAULT_DATE_FORMAT}
-	 *
-	 * @param timeInMillis
+	 * @param date
 	 * @return
 	 */
-	public static String getTime(long timeInMillis) {
-		return getTime(timeInMillis, DEFAULT_DATE_FORMAT);
+	public static String getDay(String date){
+		String str = "";
+		try {
+				str = SDF_DAY.format(SDF_DAY_TIME.parse(date));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return str;
 	}
 
 	/**
-	 * get current time in milliseconds
-	 *
+	 * @param date
 	 * @return
 	 */
-	public static long getCurrentTimeInLong() {
-		return System.currentTimeMillis();
+	public static String getTime(String date){
+		String str = "";
+		try {
+				str = SDF_TIME.format(SDF_DAY_TIME.parse(date));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return str;
 	}
 
 	/**
-	 * get current time in milliseconds, format is {@link #DEFAULT_DATE_FORMAT}
-	 *
+	 * @param date
+	 * @param duringDay
 	 * @return
 	 */
-	public static String getCurrentTimeInString() {
-		return getTime(getCurrentTimeInLong());
+	public static String getDate(String date, int duringDay){
+		String result = "";
+		try {
+			Date d = SDF_DAY.parse(date);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(d);
+			calendar.add(Calendar.DAY_OF_MONTH,duringDay);
+			result = formatYMD(calendar.getTime());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	/**
-	 * get current time in milliseconds
-	 *
+	 * @param date
 	 * @return
 	 */
-	public static String getCurrentTimeInString(SimpleDateFormat dateFormat) {
-		return getTime(getCurrentTimeInLong(), dateFormat);
+	public static boolean isToDay(String date){
+		boolean isCurrent = false;
+		try {
+			isCurrent = formatYMD(System.currentTimeMillis()).equals(formatYMD(SDF_DAY.parse(date)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return isCurrent;
+	}
+
+	/**
+	 * @param date
+	 * @return
+	 */
+	public static boolean isDefaultDateFormat(String date){
+		try {
+			SDF_DAY.parse(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param time
+	 * @return
+	 */
+	public static boolean isDefaultTimeFormat(String time){
+		try {
+			SDF_TIME.parse(time);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+	public static int compareDate(String beginDate, String endDate){
+		int w = 0;
+
+		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
+
+			if (endDate.equals(beginDate))return 0;
+
+			try {
+				w = SDF_DAY.parse(endDate).getTime() > SDF_DAY.parse(beginDate).getTime()
+						? 1	: -1;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return w;
 	}
 }

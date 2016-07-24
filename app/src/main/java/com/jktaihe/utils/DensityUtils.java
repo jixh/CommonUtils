@@ -1,6 +1,7 @@
 package com.jktaihe.utils;
 
 import android.content.Context;
+import android.util.TypedValue;
 
 /**
  * Created by jktaihe on 2016/7/24.
@@ -25,5 +26,10 @@ public class DensityUtils {
     public static int px2dip(Context context,float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
+    }
+
+    public static int dp2px(Context context, int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                context.getResources().getDisplayMetrics());
     }
 }

@@ -12,7 +12,8 @@ public class JKTAIHEUtils {
 
     public static Context appContext;
 
-    public static void init(Context context){
+    public static synchronized void  init(Context context){
+        if (appContext == null)
         appContext = context;
     }
 

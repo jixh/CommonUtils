@@ -2,7 +2,6 @@ package com.jktaihe.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 /**
  * Created by jktaihe on 2016/7/24.
@@ -13,19 +12,41 @@ import android.preference.PreferenceManager;
 
 public  class SharedPreferencesUtils {
 
-    private static SharedPreferences preferences = null;
+    public static final String PREFERENCE_NAME = "jktaihesaveInfo";
 
-    public void init(Context context){
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+    private static SharedPreferences preferences = null;
+    private static SharedPreferences.Editor editor = null;
+    private static SharedPreferencesUtils instance = null;
+
+    private SharedPreferencesUtils(Context cxt) {
+        preferences = cxt.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        editor = preferences.edit();
+    }
+
+    public static synchronized void init(Context context){
+        if(instance == null){
+            instance = new SharedPreferencesUtils(context);
+        }
+    }
+
+    /**
+     * get instance
+     */
+    public synchronized static SharedPreferencesUtils getInstance() {
+        if (preferences == null) {
+            throw new RuntimeException("please init first!");
+        }
+        return instance;
     }
 
     public static void put(String key,String value){
-        preferences.edit().putString(key,value).commit();
+        editor.putString(key,value).commit();
     }
 
     public static String getS(String key){
         return preferences.getString(key,"");
     }
+
     public static String getS(String key,String defaultS){
         return preferences.getString(key,defaultS);
     }

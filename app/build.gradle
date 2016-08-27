@@ -1,8 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 23
+    buildToolsVersion '23.0.3'
+
+    lintOptions {
+        abortOnError false
+    }
 
     defaultConfig {
         minSdkVersion 8
@@ -18,11 +22,27 @@ android {
     }
 }
 
+//定义一个函数，target是生成jar包的文件名，classDir是class文件所在的文件夹
+def makeJar(String target,String classDir){
+    exec{
+        executable "jar"   //调用jar
+        args "cvf",target
+        args "-C", classDir
+        args "","."
+    }
+}
+
+//新建一个task,名为buildLib,依赖build(build是一个自带的task)
+task buildLib(dependsOn:['build'])<< {
+    makeJar("commonutils.jar","build/intermediates/classes/release")
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.squareup.okhttp:okhttp:2.5.0'
-    compile 'com.google.code.gson:gson:2.4'
-    compile 'com.squareup.okio:okio:1.6.0'
+    compile 'com.android.support:appcompat-v7:+'
+    compile 'com.squareup.okhttp:okhttp:+'
+    compile 'com.google.code.gson:gson:+'
+    compile 'com.squareup.okio:okio:+'
+    compile 'com.android.support:support-v4:24.1.1'
 }

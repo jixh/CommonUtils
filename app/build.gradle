@@ -39,10 +39,4 @@ task buildLib(dependsOn:['build'])<< {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:+'
-    compile 'com.squareup.okhttp:okhttp:+'
-    compile 'com.google.code.gson:gson:+'
-    compile 'com.squareup.okio:okio:+'
-    compile 'com.android.support:support-v4:24.1.1'
 }

@@ -2,6 +2,7 @@ package com.jktaihe.utils;
 
 import android.text.TextUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,91 +22,6 @@ public class DateUtils {
 
 	private DateUtils(){
 		throw new AssertionError();
-	}
-
-	/**
-	 * @param beginDate
-	 * @param endDate
-	 * @return
-	 */
-	public static int betweenSecond(String beginDate,String endDate){
-		int w = 0;
-		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
-			try {
-				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return w;
-	}
-	/**
-	 * @param beginDate
-	 * @param endDate
-	 * @return
-	 */
-	public static int betweenMin(String beginDate,String endDate){
-		int w = 0;
-		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
-			try {
-				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000*60));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return w;
-	}
-
-	/**
-	 * @param beginDate
-	 * @param endDate
-	 * @return
-	 */
-	public static int betweenHour(String beginDate,String endDate){
-		int w = 0;
-		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
-			try {
-				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000*60*60));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return w;
-	}
-
-
-	/**
-	 * @param beginDate
-	 * @param endDate
-	 * @return
-	 */
-	public static int betweenWeeks(String beginDate,String endDate){
-		int w = 0;
-		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
-			try {
-				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000*60*60*24*7));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return w;
-	}
-
-	/**
-	 * @param beginDate
-	 * @param endDate
-	 * @return
-	 */
-	public static int betweenDays(String beginDate,String endDate){
-		int w = 0;
-		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
-			try {
-				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000*60*60*24));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return w;
 	}
 
 	/**
@@ -180,6 +96,54 @@ public class DateUtils {
 		return result;
 	}
 
+
+	/***
+	 * 根据时间获取星期
+	 * @param
+	 * @param
+	 * @return
+	 */
+	private static final String[] weeks = {"周日","周一","周二","周三","周四","周五","周六"};
+	public static String getWeek(int year, int monthOfYear, int dayOfMonth) {
+		Calendar c = Calendar.getInstance();
+		c.set(year, monthOfYear, dayOfMonth);
+		int index= c.get(Calendar.DAY_OF_WEEK);
+		return weeks[index - 1];
+	}
+
+
+	public static String getDateAndWeek() {
+		Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		int day = c.get(Calendar.DAY_OF_MONTH);
+		String week = getWeek(year, month,day);
+		return (month+1)+"月"+day+"日"+"\t"+week;
+	}
+
+	public static String getWeek() {
+		Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		int day = c.get(Calendar.DAY_OF_MONTH);
+		String week = getWeek(year, month,day);
+		return week;
+	}
+
+	public static int[] getYMD() {
+		Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		int day = c.get(Calendar.DAY_OF_MONTH);
+		int[] datas = new int[3];
+		datas[0] = year;
+		datas[1] = month + 1;
+		datas[2] = day;
+		return datas;
+	}
+
+
+
 	/**
 	 * @param date
 	 * @return
@@ -237,6 +201,123 @@ public class DateUtils {
 			try {
 				w = SDF_DAY.parse(endDate).getTime() > SDF_DAY.parse(beginDate).getTime()
 						? 1	: -1;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return w;
+	}
+
+	public static int dateCompare(String s1,String s2) {
+		//设定时间的模板
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		//得到指定模范的时间
+		Date d1 = null;
+		try {
+			d1 = sdf.parse(s1);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Date d2 = null;
+		try {
+			d2 = sdf.parse(s2);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		//比较
+		long d = d1.getTime() - d2.getTime();
+		if (d > 0) {
+			return 1;
+		} else if (d == 0) {
+			return 0;
+		} else {
+			return -1;
+		}
+	}
+
+	/**
+	 * 日期间隔
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+	public static int betweenSecond(String beginDate,String endDate){
+		int w = 0;
+		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
+			try {
+				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return w;
+	}
+	/**
+	 * 日期间隔
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+	public static int betweenMin(String beginDate,String endDate){
+		int w = 0;
+		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
+			try {
+				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000*60));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return w;
+	}
+
+	/**
+	 * 日期间隔
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+	public static int betweenHour(String beginDate,String endDate){
+		int w = 0;
+		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
+			try {
+				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000*60*60));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return w;
+	}
+
+
+	/**
+	 * 日期间隔
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+	public static int betweenWeeks(String beginDate,String endDate){
+		int w = 0;
+		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
+			try {
+				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000*60*60*24*7));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return w;
+	}
+
+	/**
+	 * 日期间隔
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+	public static int betweenDays(String beginDate,String endDate){
+		int w = 0;
+		if(!TextUtils.isEmpty(beginDate) && !TextUtils.isEmpty(endDate)){
+			try {
+				w = (int) ((SDF_DAY_TIME.parse(endDate).getTime() - SDF_DAY_TIME.parse(beginDate).getTime())/(1000*60*60*24));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

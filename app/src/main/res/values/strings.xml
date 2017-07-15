@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CommonUtils</string>
+    <string name="case_check_input">%s还没有填写,请确认填写后再保存</string>
+
 </resources>

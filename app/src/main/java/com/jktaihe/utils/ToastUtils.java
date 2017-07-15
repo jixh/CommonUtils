@@ -17,35 +17,35 @@ public class ToastUtils {
         throw new AssertionError();
     }
 
-    public static void s(Context context, int resId) {
+    public static void shortToast(Context context, int resId) {
         show(context, context.getResources().getText(resId), Toast.LENGTH_SHORT);
     }
 
-    public static void s(Context context, String text) {
+    public static void shortToast(Context context, String text) {
         show(context, text, Toast.LENGTH_SHORT);
     }
 
-    public static void s(Context context, int resId, Object... args) {
+    public static void shortToast(Context context, int resId, Object... args) {
         show(context, String.format(context.getResources().getString(resId), args), Toast.LENGTH_SHORT);
     }
 
-    public static void s(Context context, String format, Object... args) {
+    public static void shortToast(Context context, String format, Object... args) {
         show(context, String.format(format, args), Toast.LENGTH_SHORT);
     }
 
-    public static void l(Context context, int resId) {
+    public static void longToast(Context context, int resId) {
         show(context, context.getResources().getText(resId), Toast.LENGTH_LONG);
     }
 
-    public static void l(Context context, String text) {
+    public static void longToast(Context context, String text) {
         show(context, text, Toast.LENGTH_LONG);
     }
 
-    public static void l(Context context, int resId, Object... args) {
+    public static void longToast(Context context, int resId, Object... args) {
         show(context, String.format(context.getResources().getString(resId), args), Toast.LENGTH_LONG);
     }
 
-    public static void l(Context context, String format, Object... args) {
+    public static void longToast(Context context, String format, Object... args) {
         show(context, String.format(format, args), Toast.LENGTH_LONG);
     }
 
